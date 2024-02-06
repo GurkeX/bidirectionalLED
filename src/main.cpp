@@ -22,17 +22,17 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // pinMode(A0, INPUT);
-  // digitalWrite(anode, LOW);
-  // delay(500);
-  // Serial.print(analogRead(A0));
-  // delay(500);
+  pinMode(A0, INPUT);
+  digitalWrite(anode, LOW);
+  delay(500);
+  Serial.print(analogRead(A0));
+  delay(500);
 
-  // pinMode(A0, OUTPUT);
-  // analogWrite(A0, LOW);
-  // digitalWrite(anode, HIGH);
-  // Serial.print(" led an\n");
-  // delay(500);
+  pinMode(A0, OUTPUT);
+  analogWrite(A0, LOW);
+  digitalWrite(anode, HIGH);
+  Serial.print(" led an\n");
+  delay(500);
 
   String teststring = "Hello";
 

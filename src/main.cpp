@@ -1,11 +1,18 @@
 #include <Arduino.h>
 
+#define kathode 12
+#define anode 13
+
+
 // put function declarations here:
-int myFunction(int, int);
+int readLED();
 
 void setup() {
   // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  readLED();
+
+  pinMode(anode, OUTPUT);
+  digitalWrite(anode, HIGH);
 }
 
 void loop() {
@@ -13,6 +20,6 @@ void loop() {
 }
 
 // put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+int readLED() {
+  return 0;
 }

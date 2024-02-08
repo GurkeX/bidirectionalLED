@@ -10,7 +10,7 @@
 
 
 // functions to decode and encode Strings to bits and bytes and vice versa
-uint8_t readMessage();
+void reveiveMessage();
 void sendMessage(const String& message);
 void encodeStringToBinary(const String& message, uint8_t* binaryMessage, size_t maxLength);
 
@@ -20,21 +20,23 @@ void sendStartBit();
 void sendStopBit();
 void sendByte(uint8_t byte);
 
+bool receiveBit();
+uint8_t receiveByte();
+
+// functions to set recieving or sending mode of Arduino
+void setReceivingMode();
+void setSendingMode();
+
+
 void setup() {
 
   Serial.begin(9600);
   pinMode(KATHODE, INPUT);
   pinMode(ANODE, OUTPUT);
-  // pinMode(KATHODE, OUTPUT);
-  // digitalWrite(KATHODE, LOW);
-  //digitalWrite(ANODE, HIGH);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  pinMode(KATHODE, INPUT);
-  digitalWrite(ANODE, LOW);
-  delay(500);
   Serial.print(analogRead(KATHODE));
   Serial.print("\n");
   delay(500);
@@ -57,10 +59,8 @@ void encodeStringToBinary(const String& message, uint8_t* binaryMessage, size_t 
 
 void sendMessage(const String& message) 
 {
-  pinMode(KATHODE, OUTPUT);
-  analogWrite(KATHODE, LOW);
-  digitalWrite(ANODE, HIGH);
-  Serial.print("light output\n");
+  setSendingMode();
+  
   // delay(500);
 
   for (unsigned int i =  0; i < message.length(); ++i) {
@@ -80,9 +80,23 @@ void sendMessage(const String& message)
   // Serial.println(); // Newline at the end
 }
 
-uint8_t readMessage() {
-  return 0;
+// Mode switching section
+
+void setReceivingMode() {
+  pinMode(KATHODE, INPUT);
+  digitalWrite(ANODE, LOW);
+  Serial.print("receiving mode\n");
+  delay(10);
 }
+void setSendingMode() {
+  pinMode(KATHODE, OUTPUT);
+  analogWrite(KATHODE, LOW);
+  digitalWrite(ANODE, HIGH);
+  Serial.print("sending mode\n");
+  delay(10);
+}
+
+// Sending section
 
 void sendBit(bool bit) {
   digitalWrite(KATHODE, bit ? HIGH : LOW); // Set the LED to HIGH for  1, LOW for  0
@@ -104,4 +118,35 @@ void sendByte(uint8_t byte) {
     sendBit(bit);
   }
   sendStopBit(); // Send the stop bit
+}
+
+
+// Receiving section 
+
+
+bool receiveBit() {
+  delay(BIT_DURATION); // Wait for the duration of a bit
+  return analogRead(KATHODE) == HIGH; // Return true if the LED is HIGH, false otherwise
+}
+
+uint8_t receiveByte() {
+  while (!receiveBit()); // Wait until the start bit is received
+  uint8_t byte =  0;
+  for (int i =  0; i <  8; ++i) {
+    byte |= receiveBit() << i; // Shift the received bit into the correct position
+  }
+  if (!receiveBit()) { // Check for the stop bit
+    // Handle error: stop bit was not received
+  }
+  return byte;
+}
+
+void receiveMessage() {
+  setReceivingMode();
+  String message = "";
+  while (true) { // Loop until a stop condition is detected
+    uint8_t byte = receiveByte();
+    message += static_cast<char>(byte);
+    // Check for a stop condition (e.g., a specific sequence of bytes)
+  }
 }

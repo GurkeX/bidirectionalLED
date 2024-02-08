@@ -15,8 +15,8 @@ void setup() {
   Serial.begin(9600);
   pinMode(A0, INPUT);
   pinMode(anode, OUTPUT);
-  pinMode(kathode, OUTPUT);
-  digitalWrite(kathode, LOW);
+  // pinMode(kathode, OUTPUT);
+  // digitalWrite(kathode, LOW);
   //digitalWrite(anode, HIGH);
 }
 
@@ -26,19 +26,20 @@ void loop() {
   digitalWrite(anode, LOW);
   delay(500);
   Serial.print(analogRead(A0));
+  Serial.print("\n");
   delay(500);
 
-  pinMode(A0, OUTPUT);
-  analogWrite(A0, LOW);
-  digitalWrite(anode, HIGH);
-  Serial.print(" led an\n");
-  delay(500);
+  // pinMode(A0, OUTPUT);
+  // analogWrite(A0, LOW);
+  // digitalWrite(anode, HIGH);
+  // Serial.print(" led an\n");
+  // delay(500);
 
-  String teststring = "Hello";
+  // String teststring = "Hello";
 
-  sendMessage(teststring);
+  // sendMessage(teststring);
 
-  delay(500);
+  // delay(500);
 
 }
 

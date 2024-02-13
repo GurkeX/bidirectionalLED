@@ -14,17 +14,33 @@ void setup()
 
 void loop()
 {
-    // put your main code here, to run repeatedly:
-    setReceivingMode();
-    Serial.print(analogRead(KATHODE));
-    Serial.print("\n");
+    // // put your main code here, to run repeatedly:
+    // setReceivingMode();
+    // Serial.print(analogRead(KATHODE));
+    // Serial.print("\n");
+    // delay(500);
+
+
+
+    // String teststring = "Hello";
+
+    // sendMessage(teststring);
+
     delay(500);
 
-    String teststring = "Hello";
-
-    sendMessage(teststring);
-
-    delay(500);
+     if (Serial.available() >  0) {
+        // Read the incoming string from the serial port
+        String receivedString = Serial.readStringUntil('\n');
+        // Trigger the sendMessage function with the received string
+        sendMessage(receivedString);
+    } else {
+        // No data on the serial port, check for received bits
+        if (receiveBit()) {
+            // Bit received, handle accordingly
+            // For example, print the received bit to the serial monitor
+            Serial.println("Received bit");
+        }
+    }
 }
 
 // Function to encode string message recieved via serial into 8bit message, that can be sent using 0s and 1s

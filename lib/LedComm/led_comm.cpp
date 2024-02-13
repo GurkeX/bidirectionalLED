@@ -79,8 +79,13 @@ void sendByte(uint8_t byte)
 
 bool receiveBit()
 {
-    delay(BIT_DURATION);                // Wait for the duration of a bit
-    return analogRead(KATHODE) == HIGH; // Return true if the LED is HIGH, false otherwise
+    delay(BIT_DURATION); // Wait for the duration of a bit
+    if (analogRead(KATHODE) < 100)
+    {
+        return true; // Received
+    }
+
+    return false; // Return true if the LED is HIGH, false otherwise
 }
 
 uint8_t receiveByte()

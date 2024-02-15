@@ -9,22 +9,10 @@ void initLedComm()
 void sendMessage(const String &message)
 {
     setSendingMode();
-
     for (unsigned int i = 0; i < message.length(); ++i)
     {
         sendByte(static_cast<uint8_t>(message[i]));
     }
-
-    // uint8_t binaryMessage[256];
-    // encodeStringToBinary(message, binaryMessage, sizeof(binaryMessage));
-
-    // for (size_t i =  0; i < sizeof(binaryMessage); ++i) {
-    //   for (int j =  7; j >=  0; --j) {
-    //     Serial.print((binaryMessage[i] >> j) &  0x01 ? '1' : '0');
-    //   }
-    //   Serial.print(' '); // Optional space between bytes
-    // }
-    // Serial.println(); // Newline at the end
 }
 
 // Mode switching section
@@ -33,7 +21,7 @@ void setReceivingMode()
 {
     pinMode(KATHODE, INPUT);
     digitalWrite(ANODE, LOW);
-    Serial.print("receiving mode\n");
+    //Serial.print("receiving mode\n");
     delay(10);
 }
 
@@ -50,6 +38,7 @@ void setSendingMode()
 
 void sendBit(bool bit)
 {
+    //setSendingMode();
     digitalWrite(KATHODE, bit ? HIGH : LOW); // Set the LED to HIGH for  1, LOW for  0
     delay(BIT_DURATION);                     // Wait for the duration of a bit
 }
@@ -79,13 +68,15 @@ void sendByte(uint8_t byte)
 
 bool receiveBit()
 {
+    //setReceivingMode();
     delay(BIT_DURATION); // Wait for the duration of a bit
-    if (analogRead(KATHODE) < 100)
+    //Serial.println(analogRead(KATHODE));
+    if (analogRead(KATHODE) < 20)
     {
         return true; // Received
     }
 
-    return false; // Return true if the LED is HIGH, false otherwise
+    return false; // Not recieved
 }
 
 uint8_t receiveByte()
@@ -104,7 +95,7 @@ uint8_t receiveByte()
     return byte;
 }
 
-void receiveMessage()
+String receiveMessage()
 {
     setReceivingMode();
     String message = "";
@@ -114,4 +105,5 @@ void receiveMessage()
         message += static_cast<char>(byte);
         // Check for a stop condition (e.g., a specific sequence of bytes)
     }
+    return message;
 }

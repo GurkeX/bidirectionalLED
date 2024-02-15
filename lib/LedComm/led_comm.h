@@ -18,7 +18,7 @@ void sendByte(uint8_t byte);
 bool receiveBit();
 uint8_t receiveByte();
 
-void reveiveMessage();
+String receiveMessage();
 void sendMessage(const String &message);
 
 // functions to set recieving or sending mode of Arduino

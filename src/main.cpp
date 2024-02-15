@@ -14,21 +14,9 @@ void setup()
 
 void loop()
 {
-    // // put your main code here, to run repeatedly:
-    // setReceivingMode();
-    // Serial.print(analogRead(KATHODE));
-    // Serial.print("\n");
-    // delay(500);
-
-
-
-    // String teststring = "Hello";
-
-    // sendMessage(teststring);
-
     delay(500);
 
-     if (Serial.available() >  0) {
+     if (Serial.available() > 0) {
         // Read the incoming string from the serial port
         String receivedString = Serial.readStringUntil('\n');
         // Trigger the sendMessage function with the received string
@@ -36,6 +24,7 @@ void loop()
     } else {
         // No data on the serial port, check for received bits
         if (receiveBit()) {
+            receiveMessage();
             // Bit received, handle accordingly
             // For example, print the received bit to the serial monitor
             Serial.println("Received bit");

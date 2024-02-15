@@ -3,9 +3,9 @@
 #define KATHODE A0 // kathode of the led
 #define ANODE 13   // anode of the led
 
-#define START_BIT 0      // Start bit is always  0
-#define STOP_BIT 1       // Stop bit is always  1
-#define BIT_DURATION 100 // Duration of one bit in milliseconds
+#define START_BIT 1      // Start bit is always  1
+#define STOP_BIT 0       // Stop bit is always  0
+#define BIT_DURATION 200 // Duration of one bit in milliseconds
 
 void initLedComm();
 

@@ -68,10 +68,10 @@ void sendByte(uint8_t byte)
 
 bool receiveBit()
 {
-    //setReceivingMode();
+    setReceivingMode();
     delay(BIT_DURATION); // Wait for the duration of a bit
     //Serial.println(analogRead(KATHODE));
-    if (analogRead(KATHODE) < 20)
+    if (analogRead(KATHODE) < 100)
     {
         return true; // Received
     }
@@ -81,25 +81,23 @@ bool receiveBit()
 
 uint8_t receiveByte()
 {
-    while (!receiveBit())
+    while (receiveBit())
         ; // Wait until the start bit is received
     uint8_t byte = 0;
     for (int i = 0; i < 8; ++i)
     {
         byte |= receiveBit() << i; // Shift the received bit into the correct position
     }
-    if (!receiveBit())
-    { // Check for the stop bit
-      // Handle error: stop bit was not received
-    }
+    
     return byte;
 }
 
 String receiveMessage()
 {
     setReceivingMode();
+    Serial.println("receiving message");
     String message = "";
-    while (true)
+    while (receiveBit())
     { // Loop until a stop condition is detected
         uint8_t byte = receiveByte();
         message += static_cast<char>(byte);

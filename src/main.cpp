@@ -14,13 +14,14 @@ void setup()
 
 void loop()
 {
-    delay(500);
+    //delay(500);
 
      if (Serial.available() > 0) {
         // Read the incoming string from the serial port
         String receivedString = Serial.readStringUntil('\n');
         // Trigger the sendMessage function with the received string
         sendMessage(receivedString);
+    
     } else {
         // No data on the serial port, check for received bits
         if (receiveBit()) {

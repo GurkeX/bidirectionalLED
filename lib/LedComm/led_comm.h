@@ -5,7 +5,7 @@
 
 #define START_BIT 1      // Start bit is always  1
 #define STOP_BIT 0       // Stop bit is always  0
-#define BIT_DURATION 1000 // Duration of one bit in milliseconds
+#define BIT_DURATION 250 // Duration of one bit in milliseconds
 
 void initLedComm();
 

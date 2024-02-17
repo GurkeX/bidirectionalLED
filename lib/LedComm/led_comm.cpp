@@ -95,7 +95,7 @@ uint8_t receiveByte()
     {
         bool bit = receiveBit(true);
         Serial.println(bit);
-        byte |= bit << i - 1; // Shift the received bit into the correct position
+        byte |= bit << (i - 1); // Shift the received bit into the correct position
     }
     //Serial.println(millis() - beginning);
     Serial.println("Byte as 0s and 1s:");

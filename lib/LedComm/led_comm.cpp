@@ -71,7 +71,7 @@ bool receiveBit(bool isData)
 {
     setReceivingMode();
     int brightness = analogRead(KATHODE);
-    Serial.println(brightness); 
+    //Serial.println(brightness); 
     if (brightness < 100)
     {
         delay(BIT_DURATION); // Wait for the duration of a bit
@@ -91,11 +91,23 @@ uint8_t receiveByte()
     //     ; // Wait until the start bit is received
     
     uint8_t byte = 0;
-    for (int i = 0; i < 8; ++i)
+    for (int i = 8; i > 0; --i)
     {
-        byte |= receiveBit(true) << i; // Shift the received bit into the correct position
+        bool bit = receiveBit(true);
+        Serial.println(bit);
+        byte |= bit << i - 1; // Shift the received bit into the correct position
     }
     //Serial.println(millis() - beginning);
+    Serial.println("Byte as 0s and 1s:");
+    for (int i = 8; i > 0; --i)
+    {
+        bool bit = (byte >> i) &  0x01;
+        Serial.print(bit ? '1' : '0');
+    }
+    Serial.println(); // Print a newline after the byte
+
+
+    //Serial.println(static_cast<char>(byte));
 
     return byte;
 }

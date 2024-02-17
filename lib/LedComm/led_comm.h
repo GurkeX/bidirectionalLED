@@ -5,7 +5,7 @@
 
 #define START_BIT 1      // Start bit is always  1
 #define STOP_BIT 0       // Stop bit is always  0
-#define BIT_DURATION 200 // Duration of one bit in milliseconds
+#define BIT_DURATION 1000 // Duration of one bit in milliseconds
 
 void initLedComm();
 
@@ -15,7 +15,7 @@ void sendStartBit();
 void sendStopBit();
 void sendByte(uint8_t byte);
 
-bool receiveBit();
+bool receiveBit(bool isData);
 uint8_t receiveByte();
 
 String receiveMessage();

@@ -19,8 +19,8 @@ void sendMessage(const String &message)
 
 void setReceivingMode()
 {
-    pinMode(KATHODE, INPUT);
     digitalWrite(ANODE, LOW);
+    pinMode(KATHODE, INPUT);
     //Serial.print("receiving mode\n");
     delay(10);
 }
@@ -28,8 +28,8 @@ void setReceivingMode()
 void setSendingMode()
 {
     pinMode(KATHODE, OUTPUT);
-    analogWrite(KATHODE, LOW);
-    digitalWrite(ANODE, LOW);
+    analogWrite(KATHODE, HIGH);
+    digitalWrite(ANODE, HIGH);
     Serial.print("sending mode\n");
     delay(10);
 }
@@ -39,7 +39,8 @@ void setSendingMode()
 void sendBit(bool bit)
 {
     //setSendingMode();
-    digitalWrite(KATHODE, bit ? HIGH : LOW); // Set the LED to HIGH for  1, LOW for  0
+    
+    digitalWrite(KATHODE, bit ? LOW : HIGH); // Set the LED to HIGH for  1, LOW for  0
     delay(BIT_DURATION);                     // Wait for the duration of a bit
 }
 
@@ -66,42 +67,49 @@ void sendByte(uint8_t byte)
 
 // Receiving section
 
-bool receiveBit()
+bool receiveBit(bool isData)
 {
     setReceivingMode();
-    delay(BIT_DURATION); // Wait for the duration of a bit
-    //Serial.println(analogRead(KATHODE));
-    if (analogRead(KATHODE) < 100)
+    int brightness = analogRead(KATHODE);
+    Serial.println(brightness); 
+    if (brightness < 100)
     {
+        delay(BIT_DURATION); // Wait for the duration of a bit
         return true; // Received
     }
 
+    if(isData) {
+        delay(BIT_DURATION); // Wait for the duration
+    }
     return false; // Not recieved
 }
 
 uint8_t receiveByte()
 {
-    while (receiveBit())
-        ; // Wait until the start bit is received
+    Serial.println("receiveByte");
+    // while (receiveBit())
+    //     ; // Wait until the start bit is received
+    
     uint8_t byte = 0;
     for (int i = 0; i < 8; ++i)
     {
-        byte |= receiveBit() << i; // Shift the received bit into the correct position
+        byte |= receiveBit(true) << i; // Shift the received bit into the correct position
     }
-    
+    //Serial.println(millis() - beginning);
+
     return byte;
 }
 
 String receiveMessage()
 {
     setReceivingMode();
-    Serial.println("receiving message");
+    //Serial.println("receiving message");
     String message = "";
-    while (receiveBit())
-    { // Loop until a stop condition is detected
+    //while (receiveBit(true))
+    //{ // Loop until a stop condition is detected
         uint8_t byte = receiveByte();
         message += static_cast<char>(byte);
         // Check for a stop condition (e.g., a specific sequence of bytes)
-    }
+    //}
     return message;
 }

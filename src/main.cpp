@@ -22,14 +22,12 @@ void loop()
         // Trigger the sendMessage function with the received string
         sendMessage(receivedString);
     
-    } else {
+    } else if(receiveBit()) {
         // No data on the serial port, check for received bits
-        if (receiveBit()) {
-            receiveMessage();
-            // Bit received, handle accordingly
-            // For example, print the received bit to the serial monitor
-            Serial.println("Received bit");
-        }
+        Serial.print(receiveMessage());
+        // Bit received, handle accordingly
+        // For example, print the received bit to the serial monitor
+        Serial.println("Received bit");
     }
 }
 

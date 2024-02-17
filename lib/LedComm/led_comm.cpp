@@ -29,7 +29,7 @@ void setSendingMode()
 {
     pinMode(KATHODE, OUTPUT);
     analogWrite(KATHODE, LOW);
-    digitalWrite(ANODE, HIGH);
+    digitalWrite(ANODE, LOW);
     Serial.print("sending mode\n");
     delay(10);
 }
@@ -45,12 +45,12 @@ void sendBit(bool bit)
 
 void sendStartBit()
 {
-    sendBit(START_BIT); // Send a start bit (always  0)
+    sendBit(START_BIT); // Send a start bit (always  1)
 }
 
 void sendStopBit()
 {
-    sendBit(STOP_BIT); // Send a stop bit (always  1)
+    sendBit(STOP_BIT); // Send a stop bit (always  0)
 }
 
 void sendByte(uint8_t byte)

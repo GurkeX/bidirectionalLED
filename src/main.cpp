@@ -29,6 +29,7 @@ void loop()
         // For example, print the received bit to the serial monitor
         Serial.println("Received bit");
     }
+
 }
 
 // Function to encode string message recieved via serial into 8bit message, that can be sent using 0s and 1s

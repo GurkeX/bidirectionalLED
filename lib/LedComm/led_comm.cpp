@@ -1,5 +1,6 @@
 #include <led_comm.h>
 
+
 void initLedComm()
 {
     pinMode(KATHODE, INPUT);
@@ -65,18 +66,30 @@ void sendByte(uint8_t byte)
 
 // Receiving section
 
-bool receiveBit(bool isData)
+bool receiveBit()
 {
-    if (analogRead(KATHODE) < LED_ON_VALUE)
+    switch (analogRead(KATHODE))
     {
-        delay(BIT_DURATION); // Wait for the duration of a bit
-        return true; // Received
-    }
+    case 0:
+        return true;
+        break;
 
-    if(isData) {
-        delay(BIT_DURATION); // Wait for the duration
+    case 1:
+        return true;
+        break;
+
+    case 2:
+        return true;
+        break;   
+
+    case 3:
+        return true;
+        break;     
+    
+    default:
+        return false;
+        break;
     }
-    return false; // Not recieved
 }
 
 uint8_t receiveByte()
@@ -84,11 +97,11 @@ uint8_t receiveByte()
     Serial.println("receiveByte");
     
     uint8_t byte = 0;
-    for (int i = 8; i > 0; --i)
+    for (int i = 0; i < 8; ++i)
     {
-        bool bit = receiveBit(true);
-        //Serial.println(bit);
-        byte |= bit << (i - 1); // Shift the received bit into the correct position
+        bool bit = receiveBit();
+        delay(BIT_DURATION);
+        byte |= bit << (7 - i); // Shift the received bit into the correct position
     }
     
     Serial.println("Byte as 0s and 1s:");
@@ -108,13 +121,8 @@ uint8_t receiveByte()
 String receiveMessage()
 {
     setReceivingMode();
-    //Serial.println("receiving message");
-    String message = "";
-    //while (receiveBit(true))
-    //{ // Loop until a stop condition is detected
+    String message = ""; 
         uint8_t byte = receiveByte();
         message += static_cast<char>(byte);
-        // Check for a stop condition (e.g., a specific sequence of bytes)
-    //}
     return message;
 }

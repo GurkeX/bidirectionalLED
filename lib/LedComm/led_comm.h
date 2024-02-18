@@ -16,7 +16,8 @@ void sendStartBit();
 void sendStopBit();
 void sendByte(uint8_t byte);
 
-bool receiveBit(bool isData);
+// bool receiveBit(bool isData);
+bool receiveBit();
 uint8_t receiveByte();
 
 String receiveMessage();

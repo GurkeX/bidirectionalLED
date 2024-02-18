@@ -9,7 +9,6 @@ void encodeStringToBinary(const String &message, uint8_t *binaryMessage, size_t 
 
 void setup()
 {
-
     Serial.begin(9600);
     initLedComm();
 }
@@ -25,12 +24,10 @@ void loop()
         // Trigger the sendMessage function with the received string
         sendMessage(receivedString);
     
-    } else if(receiveBit(false)) {
-        long beginning = millis();
-        delay(BIT_DURATION / 2);
+    } else if(receiveBit()) {
+        delay(BIT_DURATION + BIT_DURATION / 2);
         // No data on the serial port, check for received bits
         Serial.println(receiveMessage());
-        Serial.println(millis() - beginning);
         // Bit received, handle accordingly
         // For example, print the received bit to the serial monitor
     }

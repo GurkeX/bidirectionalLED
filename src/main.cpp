@@ -25,12 +25,12 @@ void loop()
         sendMessage(receivedString);
     
     } else if(receiveBit()) {
-        delay(BIT_DURATION + BIT_DURATION / 2);
+        delay(BIT_DURATION + BIT_DURATION / 3);
         // No data on the serial port, check for received bits
         Serial.println(receiveMessage());
         // Bit received, handle accordingly
         // For example, print the received bit to the serial monitor
-    }
+    } 
 
 }
 

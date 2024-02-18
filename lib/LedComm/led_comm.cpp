@@ -74,17 +74,17 @@ bool receiveBit()
         return true;
         break;
 
-    case 1:
-        return true;
-        break;
+    // case 1:
+    //     return true;
+    //     break;
 
-    case 2:
-        return true;
-        break;   
+    // case 2:
+    //     return true;
+    //     break;   
 
-    case 3:
-        return true;
-        break;     
+    // case 3:
+    //     return true;
+    //     break;     
     
     default:
         return false;
@@ -104,13 +104,13 @@ uint8_t receiveByte()
         byte |= bit << (7 - i); // Shift the received bit into the correct position
     }
     
-    Serial.println("Byte as 0s and 1s:");
-    for (int i = 7; i >= 0; --i)
-    {
-        bool bit = (byte >> i) &  0x01;
-        Serial.print(bit ? '1' : '0');
-    }
-    Serial.println(); // Print a newline after the byte
+    // Serial.println("Byte as 0s and 1s:");
+    // for (int i = 7; i >= 0; --i)
+    // {
+    //     bool bit = (byte >> i) &  0x01;
+    //     Serial.print(bit ? '1' : '0');
+    // }
+    // Serial.println(); // Print a newline after the byte
 
 
     //Serial.println(static_cast<char>(byte));

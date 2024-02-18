@@ -124,9 +124,18 @@ uint8_t receiveByte()
 
 String receiveMessage()
 {
-    setReceivingMode();
+    unsigned int receiveMessageCalls = 0;
     String message = ""; 
-        uint8_t byte = receiveByte();
-        message += static_cast<char>(byte);
+    while (receiveMessageCalls < 5)
+    {
+        receiveMessageCalls ++;
+            if (checkLight()) {
+                receiveMessageCalls = 0;
+                setReceivingMode();
+                uint8_t byte = receiveByte();
+                message += static_cast<char>(byte);
+            }
+    }
     return message;
 }
+    

@@ -2,6 +2,8 @@
 
 #include <led_comm.h>
 
+long beginning = 0;
+
 // functions to decode and encode Strings to bits and bytes and vice versa
 void encodeStringToBinary(const String &message, uint8_t *binaryMessage, size_t maxLength);
 
@@ -14,18 +16,21 @@ void setup()
 
 void loop()
 {
+    
     //delay(500);
-
-     if (Serial.available() > 0) {
+    setReceivingMode();
+    if (Serial.available() > 0) {
         // Read the incoming string from the serial port
         String receivedString = Serial.readStringUntil('\n');
         // Trigger the sendMessage function with the received string
         sendMessage(receivedString);
     
     } else if(receiveBit(false)) {
+        long beginning = millis();
         delay(BIT_DURATION / 2);
         // No data on the serial port, check for received bits
         Serial.println(receiveMessage());
+        Serial.println(millis() - beginning);
         // Bit received, handle accordingly
         // For example, print the received bit to the serial monitor
     }

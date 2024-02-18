@@ -6,6 +6,7 @@
 #define START_BIT 1      // Start bit is always  1
 #define STOP_BIT 0       // Stop bit is always  0
 #define BIT_DURATION 250 // Duration of one bit in milliseconds
+#define LED_ON_VALUE 70 // Value of the analog read when light is shone on it
 
 void initLedComm();
 

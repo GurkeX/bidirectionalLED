@@ -37,9 +37,7 @@ void setSendingMode()
 // Sending section
 
 void sendBit(bool bit)
-{
-    //setSendingMode();
-    
+{   
     digitalWrite(KATHODE, bit ? LOW : HIGH); // Set the LED to HIGH for  1, LOW for  0
     delay(BIT_DURATION);                     // Wait for the duration of a bit
 }
@@ -69,10 +67,7 @@ void sendByte(uint8_t byte)
 
 bool receiveBit(bool isData)
 {
-    setReceivingMode();
-    int brightness = analogRead(KATHODE);
-    //Serial.println(brightness); 
-    if (brightness < 100)
+    if (analogRead(KATHODE) < LED_ON_VALUE)
     {
         delay(BIT_DURATION); // Wait for the duration of a bit
         return true; // Received
@@ -87,19 +82,17 @@ bool receiveBit(bool isData)
 uint8_t receiveByte()
 {
     Serial.println("receiveByte");
-    // while (receiveBit())
-    //     ; // Wait until the start bit is received
     
     uint8_t byte = 0;
     for (int i = 8; i > 0; --i)
     {
         bool bit = receiveBit(true);
-        Serial.println(bit);
+        //Serial.println(bit);
         byte |= bit << (i - 1); // Shift the received bit into the correct position
     }
-    //Serial.println(millis() - beginning);
+    
     Serial.println("Byte as 0s and 1s:");
-    for (int i = 8; i > 0; --i)
+    for (int i = 7; i >= 0; --i)
     {
         bool bit = (byte >> i) &  0x01;
         Serial.print(bit ? '1' : '0');

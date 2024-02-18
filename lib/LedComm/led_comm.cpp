@@ -3,7 +3,7 @@
 
 void initLedComm()
 {
-    pinMode(KATHODE, INPUT);
+    pinMode(CATHODE, INPUT);
     pinMode(ANODE, OUTPUT);
 }
 
@@ -21,25 +21,22 @@ void sendMessage(const String &message)
 void setReceivingMode()
 {
     digitalWrite(ANODE, LOW);
-    pinMode(KATHODE, INPUT);
-    //Serial.print("receiving mode\n");
+    pinMode(CATHODE, INPUT);
     delay(10);
 }
 
 void setSendingMode()
 {
-    pinMode(KATHODE, OUTPUT);
-    analogWrite(KATHODE, HIGH);
+    pinMode(CATHODE, OUTPUT);
+    analogWrite(CATHODE, HIGH);
     digitalWrite(ANODE, HIGH);
-    Serial.print("sending mode\n");
-    delay(10);
 }
 
 // Sending section
 
 void sendBit(bool bit)
 {   
-    digitalWrite(KATHODE, bit ? LOW : HIGH); // Set the LED to HIGH for  1, LOW for  0
+    digitalWrite(CATHODE, bit ? LOW : HIGH); // Set the LED to HIGH for  1, LOW for  0
     delay(BIT_DURATION);                     // Wait for the duration of a bit
 }
 
@@ -68,23 +65,43 @@ void sendByte(uint8_t byte)
 
 bool receiveBit()
 {
-    switch (analogRead(KATHODE))
+    pinMode(CATHODE, OUTPUT);
+    digitalWrite(CATHODE, HIGH);
+    digitalWrite(ANODE, LOW);
+
+    pinMode(CATHODE, INPUT);
+
+    delay(20);
+
+    switch (digitalRead(CATHODE))
     {
     case 0:
+        delay(BIT_DURATION - 20);
         return true;
         break;
+    
+    default:
+        delay(BIT_DURATION - 20);
+        return false;
+        break;
+    }
+}
 
-    // case 1:
-    //     return true;
-    //     break;
+bool checkLight() {
+    pinMode(CATHODE, OUTPUT);
+    digitalWrite(CATHODE, HIGH);
+    digitalWrite(ANODE, LOW);
 
-    // case 2:
-    //     return true;
-    //     break;   
+    pinMode(CATHODE, INPUT);
 
-    // case 3:
-    //     return true;
-    //     break;     
+    delay(20);
+
+    switch (digitalRead(CATHODE))
+    {
+    case 0:
+        delay(BIT_DURATION - 20);
+        return true;
+        break;
     
     default:
         return false;
@@ -94,26 +111,13 @@ bool receiveBit()
 
 uint8_t receiveByte()
 {
-    Serial.println("receiveByte");
     
     uint8_t byte = 0;
     for (int i = 0; i < 8; ++i)
     {
         bool bit = receiveBit();
-        delay(BIT_DURATION);
         byte |= bit << (7 - i); // Shift the received bit into the correct position
     }
-    
-    // Serial.println("Byte as 0s and 1s:");
-    // for (int i = 7; i >= 0; --i)
-    // {
-    //     bool bit = (byte >> i) &  0x01;
-    //     Serial.print(bit ? '1' : '0');
-    // }
-    // Serial.println(); // Print a newline after the byte
-
-
-    //Serial.println(static_cast<char>(byte));
 
     return byte;
 }

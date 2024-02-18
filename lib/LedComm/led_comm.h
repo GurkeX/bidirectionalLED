@@ -1,11 +1,11 @@
 #include <Arduino.h>
 
-#define KATHODE A0 // kathode of the led
-#define ANODE 13   // anode of the led
+#define CATHODE 13 // kathode of the led
+#define ANODE 12   // anode of the led
 
 #define START_BIT 1      // Start bit is always  1
 #define STOP_BIT 0       // Stop bit is always  0
-#define BIT_DURATION 200 // Duration of one bit in milliseconds
+#define BIT_DURATION 40 // Duration of one bit in milliseconds
 #define LED_ON_VALUE 70 // Value of the analog read when light is shone on it
 
 void initLedComm();
@@ -18,6 +18,7 @@ void sendByte(uint8_t byte);
 
 // bool receiveBit(bool isData);
 bool receiveBit();
+bool checkLight();
 uint8_t receiveByte();
 
 String receiveMessage();

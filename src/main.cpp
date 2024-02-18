@@ -17,15 +17,15 @@ void loop()
 {
     
     //delay(500);
-    setReceivingMode();
+    // setReceivingMode();
     if (Serial.available() > 0) {
         // Read the incoming string from the serial port
         String receivedString = Serial.readStringUntil('\n');
         // Trigger the sendMessage function with the received string
         sendMessage(receivedString);
     
-    } else if(receiveBit()) {
-        delay(BIT_DURATION + BIT_DURATION / 3);
+    } else if(checkLight()) {
+        // delay(BIT_DURATION + BIT_DURATION / 3);
         // No data on the serial port, check for received bits
         Serial.println(receiveMessage());
         // Bit received, handle accordingly

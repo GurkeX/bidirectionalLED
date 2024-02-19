@@ -21,7 +21,7 @@ void loop()
     String message = receiveMessage(); // Trigger the receiveMessage function
 
     if (message != "") {
-        Serial.println(message);
+        Serial.println(message); // Print the message, if it was received
     }
 
 }

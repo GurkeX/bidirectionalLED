@@ -36,7 +36,7 @@ void setSendingMode()
 
 void sendBit(bool bit)
 {   
-    digitalWrite(CATHODE, bit ? LOW : HIGH); // Set the LED to HIGH for  1, LOW for  0
+    digitalWrite(CATHODE, bit ? LOW : HIGH); // Set the LED to LOW for  1, HIGH for  0
     delay(BIT_DURATION);                     // Wait for the duration of a bit
 }
 
@@ -50,7 +50,7 @@ void sendStopBit()
     sendBit(STOP_BIT); // Send a stop bit (always  0)
 }
 
-void sendByte(uint8_t byte)
+void sendByte(const uint8_t &byte)
 {
     sendStartBit(); // Send the start bit
     for (int i = 7; i >= 0; --i)
@@ -62,6 +62,28 @@ void sendByte(uint8_t byte)
 }
 
 // Receiving section
+
+bool checkLight() {
+    pinMode(CATHODE, OUTPUT);
+    digitalWrite(CATHODE, HIGH);
+    digitalWrite(ANODE, LOW);
+
+    pinMode(CATHODE, INPUT);
+
+    delay(20);
+
+    switch (digitalRead(CATHODE))
+    {
+    case 0:
+        delay(BIT_DURATION - 20);
+        return true;
+        break;
+    
+    default:
+        return false;
+        break;
+    }
+}
 
 bool receiveBit()
 {
@@ -87,28 +109,6 @@ bool receiveBit()
     }
 }
 
-bool checkLight() {
-    pinMode(CATHODE, OUTPUT);
-    digitalWrite(CATHODE, HIGH);
-    digitalWrite(ANODE, LOW);
-
-    pinMode(CATHODE, INPUT);
-
-    delay(20);
-
-    switch (digitalRead(CATHODE))
-    {
-    case 0:
-        delay(BIT_DURATION - 20);
-        return true;
-        break;
-    
-    default:
-        return false;
-        break;
-    }
-}
-
 uint8_t receiveByte()
 {
     
@@ -124,13 +124,13 @@ uint8_t receiveByte()
 
 String receiveMessage()
 {
-    unsigned int receiveMessageCalls = 0;
+    unsigned int receiveMessageCalls = 0; // Counter of the calls of receiveMessage without data being received
     String message = ""; 
-    while (receiveMessageCalls < 5)
+    while (receiveMessageCalls < 5) // Check if whole data block has been received
     {
         receiveMessageCalls ++;
             if (checkLight()) {
-                receiveMessageCalls = 0;
+                receiveMessageCalls = 0; // Reset receiveMessageCalls because data has been received
                 setReceivingMode();
                 uint8_t byte = receiveByte();
                 message += static_cast<char>(byte);

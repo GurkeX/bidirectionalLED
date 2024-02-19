@@ -13,7 +13,7 @@ void initLedComm();
 void sendBit(bool bit);
 void sendStartBit();
 void sendStopBit();
-void sendByte(uint8_t byte);
+void sendByte(const uint8_t &byte);
 
 // bool receiveBit(bool isData);
 bool receiveBit();

@@ -112,11 +112,11 @@ uint8_t receiveByte()
 String receiveMessage()
 {
     String message = ""; 
-    while (checkData()) // Check if whole data block has been received
+    while (checkData()) // Check for new data
     {
         delay(BIT_DURATION);
         uint8_t byte = receiveByte();
-        message += static_cast<char>(byte);
+        message += static_cast<char>(byte); // Convert 8bit ASCII into readable letter and append to message
     }
     return message;
 }

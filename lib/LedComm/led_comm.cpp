@@ -18,13 +18,6 @@ void sendMessage(const String &message)
 
 // Mode switching section
 
-void setReceivingMode()
-{
-    digitalWrite(ANODE, LOW);
-    pinMode(CATHODE, INPUT);
-    delay(10);
-}
-
 void setSendingMode()
 {
     pinMode(CATHODE, OUTPUT);

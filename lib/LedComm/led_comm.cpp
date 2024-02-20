@@ -46,9 +46,9 @@ void sendStopBit()
 void sendByte(const uint8_t &byte)
 {
     sendStartBit(); // Send the start bit
-    for (int i = 7; i >= 0; --i)
+    for (int i = 7; i >= 0; --i) // Send byte bit by bit
     {
-        bool bit = (byte >> i) & 0x01;
+        bool bit = (byte >> i) & 0x01; 
         sendBit(bit);
     }
     sendStopBit(); // Send the stop bit
@@ -59,9 +59,9 @@ void sendByte(const uint8_t &byte)
 bool checkData() {
     pinMode(CATHODE, OUTPUT);
     digitalWrite(CATHODE, HIGH);
-    digitalWrite(ANODE, LOW);
+    digitalWrite(ANODE, LOW); // Charge led up
 
-    pinMode(CATHODE, INPUT);
+    pinMode(CATHODE, INPUT); 
 
     for (int i = 0; i <= NO_LIGHT_DISCHARGE_TIME_MS; i++) {
         delay(1);

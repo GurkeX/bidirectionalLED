@@ -5,9 +5,11 @@
 
 #define START_BIT 1      // Start bit is always  1
 #define STOP_BIT 0       // Stop bit is always  0
-#define BIT_DURATION 40 // Duration of one bit in milliseconds
+#define BIT_DURATION 20 // Duration of one bit in milliseconds
+#define LED_DISCHARGE_TIME_MS 5 // Time in milliseconds it takes for the led to discharge when light shines on it 
 
-void initLedComm();
+
+void initLedComm(); 
 
 // functions to send and recieve bits from and to the other Arduino
 void sendBit(bool bit);

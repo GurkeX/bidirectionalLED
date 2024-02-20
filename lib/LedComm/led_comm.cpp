@@ -70,12 +70,12 @@ bool checkLight() {
 
     pinMode(CATHODE, INPUT);
 
-    delay(20);
+    delay(LED_DISCHARGE_TIME_MS);
 
     switch (digitalRead(CATHODE))
     {
     case 0:
-        delay(BIT_DURATION - 20);
+        delay(BIT_DURATION - LED_DISCHARGE_TIME_MS);
         return true;
         break;
     
@@ -93,17 +93,17 @@ bool receiveBit()
 
     pinMode(CATHODE, INPUT);
 
-    delay(20);
+    delay(LED_DISCHARGE_TIME_MS);
 
     switch (digitalRead(CATHODE))
     {
     case 0:
-        delay(BIT_DURATION - 20);
+        delay(BIT_DURATION - LED_DISCHARGE_TIME_MS);
         return true;
         break;
     
     default:
-        delay(BIT_DURATION - 20);
+        delay(BIT_DURATION - LED_DISCHARGE_TIME_MS);
         return false;
         break;
     }

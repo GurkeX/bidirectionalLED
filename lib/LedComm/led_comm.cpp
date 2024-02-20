@@ -63,26 +63,20 @@ void sendByte(const uint8_t &byte)
 
 // Receiving section
 
-bool checkLight() {
+bool checkData() {
     pinMode(CATHODE, OUTPUT);
     digitalWrite(CATHODE, HIGH);
     digitalWrite(ANODE, LOW);
 
     pinMode(CATHODE, INPUT);
 
-    delay(LED_DISCHARGE_TIME_MS);
-
-    switch (digitalRead(CATHODE))
-    {
-    case 0:
-        delay(BIT_DURATION - LED_DISCHARGE_TIME_MS);
-        return true;
-        break;
-    
-    default:
-        return false;
-        break;
+    for (int i = 0; i <= NO_LIGHT_DISCHARGE_TIME_MS; i++) {
+        delay(1);
+        if (digitalRead(CATHODE) == LOW) 
+            return true;
     }
+
+    return false;
 }
 
 bool receiveBit()
@@ -93,17 +87,17 @@ bool receiveBit()
 
     pinMode(CATHODE, INPUT);
 
-    delay(LED_DISCHARGE_TIME_MS);
+    delay(LIT_UP_DISCHARGE_TIME_MS);
 
     switch (digitalRead(CATHODE))
     {
     case 0:
-        delay(BIT_DURATION - LED_DISCHARGE_TIME_MS);
+        delay(BIT_DURATION - LIT_UP_DISCHARGE_TIME_MS);
         return true;
         break;
     
     default:
-        delay(BIT_DURATION - LED_DISCHARGE_TIME_MS);
+        delay(BIT_DURATION - LIT_UP_DISCHARGE_TIME_MS);
         return false;
         break;
     }
@@ -124,17 +118,12 @@ uint8_t receiveByte()
 
 String receiveMessage()
 {
-    unsigned int receiveMessageCalls = 0; // Counter of the calls of receiveMessage without data being received
     String message = ""; 
-    while (receiveMessageCalls < 5) // Check if whole data block has been received
+    while (checkData()) // Check if whole data block has been received
     {
-        receiveMessageCalls ++;
-            if (checkLight()) {
-                receiveMessageCalls = 0; // Reset receiveMessageCalls because data has been received
-                setReceivingMode();
-                uint8_t byte = receiveByte();
-                message += static_cast<char>(byte);
-            }
+        delay(BIT_DURATION);
+        uint8_t byte = receiveByte();
+        message += static_cast<char>(byte);
     }
     return message;
 }
